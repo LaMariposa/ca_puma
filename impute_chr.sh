@@ -23,6 +23,12 @@ chr=$1
 echo "analyzing chromosome $chr"
 
 
+echo -e "\n\n\n ***** prepping genetic maps *****"
+grep ${chr} ${gmap} > puma_genetic_${chr}.map
+awk '{print $2 "\t" $1 "\t" $3}' puma_genetic_${chr}.map > puma_poschcm.map
+awk '{print $1 "\t.\t" $3 "\t" $2}' puma_genetic_${chr}.map | tail -n +2 > puma_plink.map
+
+
 echo -e "\n\n\n ***** prepping reference panel *****"
 bcftools view --samples-file ${reflist} -o refpanel_${chr}.vcf ${vcf} ${chr}
 bgzip refpanel_${chr}.vcf
@@ -30,14 +36,12 @@ bcftools index refpanel_${chr}.vcf.gz
 
 
 echo -e "\n\n\n ***** phasing reference panel with shapeit *****"
-awk '{print $2 "\t" $1 "\t" $3}' ${gmap} > puma_poschcm.map
 ${shapeit}/phase_common_static --input refpanel_${chr}.vcf.gz --region ${chr} --map puma_poschcm.map --output refpanel_${chr}.sphased.bcf --thread ${threads}
 bcftools query -f'%CHROM\t%POS\t%REF,%ALT\n' refpanel_${chr}.sphased.bcf | bgzip -c > refpanel_${chr}.sphased.tsv.gz
 tabix -s1 -b2 -e2 refpanel_${chr}.sphased.tsv.gz 	
 
 
 echo -e "\n\n\n ***** phasing reference panel with beagle ***"
-awk awk '{print $1 "\t.\t" $3 "\t" $2}' ${gmap} | tail -n +2 > puma_plink.map
 java -jar ${beagle} gt=refpanel_${chr}.vcf.gz map=puma_plink.map out=refpanel_${chr}.bphased nthreads=${threads}
 	#could specify ne
 bcftools index refpanel_${chr}.bphased.vcf.gz
