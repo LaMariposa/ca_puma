@@ -33,4 +33,4 @@ ${glimpse}/GLIMPSE_concordance_static --input infiles.txt --samples ${dssamples}
 /scratch3/puma_megan/impute/assess/concordance_plot.py
 prefix=${PWD##*/}
 mv accplot.png ${prefix}_concord.png
-
+mv concord_out.rsquare.grp.txt.gz ${prefix}_concord_out.rsquare.grp.txt.gz
