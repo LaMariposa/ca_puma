@@ -2,16 +2,16 @@
 
 ## imputation scripts
 
-##### impute_chr_test.sh
+### impute_chr_test.sh
 	test imputation workflows on a single chromosome
 
 	**impute_assess_ds.sh**
 		assess imputation results
 
-### impute_chr_shapeit_glimpse.sh
+#### impute_chr_shapeit_glimpse.sh
 
 
-### rad_wgs_concord.sh
+##### rad_wgs_concord.sh
 
 ### rad_wgs_concord_summarize.sh
 
