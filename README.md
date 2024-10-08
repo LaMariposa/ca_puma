@@ -2,7 +2,7 @@
 
 ## imputation scripts
 
-### impute_chr_test.sh
+##### impute_chr_test.sh
 	test imputation workflows on a single chromosome
 
 	**impute_assess_ds.sh**
